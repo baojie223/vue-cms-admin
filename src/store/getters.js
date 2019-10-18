@@ -12,6 +12,7 @@ const getters = {
   apps: state => state.user.apps,
   permissions: state => state.user.permissions,
   hasAbility: state => state.user.apps && state.user.apps.length > 0 && state.user.permissions && state.user.permissions.length > 0,
-  logo: state => state.user.settings.logo
+  logo: state => state.user.settings.logo,
+  settings: state => state.user.settings
 }
 export default getters

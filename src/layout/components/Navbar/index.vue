@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <a-row type="flex" align="middle">
-      <a-col span="12">
+      <a-col span="12" class="left">
         <img :src="logo" class="logo" />
         <breadcrumb />
       </a-col>
@@ -77,7 +77,14 @@ export default {
 .navbar {
   padding: 0;
 }
+.left {
+  display: flex;
+  align-items: center;
+}
 .logo {
+  display: block;
   width: 200px;
+  height: 64px;
+  margin: 0 12px;
 }
 </style>

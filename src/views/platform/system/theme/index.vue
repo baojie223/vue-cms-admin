@@ -1,76 +1,94 @@
 <template>
   <div>
     <div>图片上传</div>
-    <div class="clearfix">
-      <a-upload :fileList="fileList" :remove="handleRemove" :beforeUpload="beforeUpload">
-        <a-button>
-          <a-icon type="upload" />Select File
-        </a-button>
-      </a-upload>
-      <a-button
-        type="primary"
-        @click="handleUpload"
-        :disabled="fileList.length === 0"
-        :loading="uploading"
-        style="margin-top: 16px"
-      >{{uploading ? 'Uploading' : 'Start Upload' }}</a-button>
+    <a-button type="primary" @click="save">保存</a-button>
+    <div class="logo-upload">
+      <div class="pic">
+        <img :src="imgDataUrl" />
+      </div>
+
+      <a-button block style="margin-top: 16px" @click="() => cropperShow = true">选择图片</a-button>
+      <a-button type="danger" block style="margin-top: 8px" @click="() => imgDataUrl = logo">重置</a-button>
     </div>
-    <avatar-upload></avatar-upload>
+    <my-upload
+      field="img"
+      @crop-success="cropSuccess"
+      v-model="cropperShow"
+      :width="200"
+      :height="64"
+      img-format="png"
+      noCircle
+      noSquare
+      noRotate
+    ></my-upload>
   </div>
 </template>
 
 <script>
-import AvatarUpload from '@/views/components-demo/avatar-upload'
+import { mapGetters, mapMutations } from 'vuex'
+import myUpload from 'vue-image-crop-upload'
+import { setTheme, getTheme } from '@/api/platform'
 export default {
   name: '',
   components: {
-    AvatarUpload
+    MyUpload: myUpload
   },
   data() {
     return {
-      fileList: [],
-      uploading: false
+      cropperShow: false,
+      imgDataUrl: ''
+    }
+  },
+  computed: {
+    ...mapGetters(['logo', 'settings'])
+  },
+  created() {
+    if (this.logo) {
+      this.imgDataUrl = this.logo
     }
   },
   methods: {
-    handleRemove(file) {
-      const index = this.fileList.indexOf(file)
-      const newFileList = this.fileList.slice()
-      newFileList.splice(index, 1)
-      this.fileList = newFileList
+    ...mapMutations('user', ['SET_SETTINGS']),
+    cropSuccess(imgDataUrl, field) {
+      this.imgDataUrl = imgDataUrl
     },
-    beforeUpload(file) {
-      this.fileList = [...this.fileList, file]
-      return false
-    },
-    handleUpload() {
-      const { fileList } = this
-      const formData = new FormData()
-      fileList.forEach(file => {
-        formData.append('files[]', file)
-      })
-      this.uploading = true
-
-      // You can use any AJAX library you like
-      // reqwest({
-      //   url: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-      //   method: 'post',
-      //   processData: false,
-      //   data: formData,
-      //   success: () => {
-      //     this.fileList = [];
-      //     this.uploading = false;
-      //     this.$message.success('upload successfully.');
-      //   },
-      //   error: () => {
-      //     this.uploading = false;
-      //     this.$message.error('upload failed.');
-      //   },
-      // });
+    async save() {
+      const data = {
+        ...this.settings,
+        logo: this.imgDataUrl
+      }
+      try {
+        await setTheme(data)
+        const { result } = await getTheme()
+        this.SET_SETTINGS(result)
+        this.$message.success('上传成功')
+      } catch {
+        this.$message.error('上传失败，请稍后再试')
+      }
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+@import '~ant-design-vue/dist/antd.less';
+
+.logo-upload {
+  width: 218px;
+  padding: 8px;
+  background-color: #fff;
+  border: 1px dashed @border-color-base;
+  transition: all 0.3s;
+  &:hover {
+    border: 1px dashed @primary-color;
+  }
+  .pic {
+    width: 100%;
+    height: 64px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
 </style>

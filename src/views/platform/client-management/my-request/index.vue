@@ -1,12 +1,15 @@
 <template>
   <div style="height: 100vh; background: red">
-    my-request
+    {{ $t('New') }}
   </div>
 </template>
 
 <script>
 export default {
-  name: ''
+  name: '',
+  mounted() {
+    console.log(this.$t('New'))
+  }
 }
 </script>
 

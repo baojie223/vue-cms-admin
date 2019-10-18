@@ -10,6 +10,7 @@ import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 // })
 
 import '@/styles/index.scss' // global css
+import '@/styles/index.less'
 
 import App from './App'
 import store from './store'
