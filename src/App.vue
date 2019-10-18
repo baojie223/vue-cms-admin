@@ -10,7 +10,11 @@
 <script>
 // import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN'
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
 
+    }
+  }
 }
 </script>
