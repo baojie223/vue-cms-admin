@@ -2,7 +2,7 @@
   <div class="navbar">
     <a-row type="flex" align="middle">
       <a-col span="12" class="left">
-        <img :src="logo" class="logo" />
+        <img :src="logo || require('@/assets/images/home_logo.svg')" class="logo" />
         <breadcrumb />
       </a-col>
       <a-col span="12" style="text-align: right">

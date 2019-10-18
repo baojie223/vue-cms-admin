@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import { Row, Col, Form, Input, Icon, Button, Divider, notification, message, Popover, Layout, Menu, Breadcrumb, Dropdown, Avatar, Upload } from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.less'
 
 Vue.use(Row)
 Vue.use(Col)
@@ -16,5 +15,6 @@ Vue.use(Breadcrumb)
 Vue.use(Dropdown)
 Vue.use(Avatar)
 Vue.use(Upload)
-Vue.$message = message
-Vue.$notification = notification
+
+Vue.prototype.$message = message
+Vue.prototype.$notification = notification

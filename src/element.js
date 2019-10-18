@@ -1,7 +1,4 @@
 import Vue from 'vue'
-import Element from 'element-ui'
-import './styles/element-variables.scss'
+import { ColorPicker } from 'element-ui'
 
-Vue.use(Element, {
-  size: 'medium' // set element-ui default size
-})
+Vue.use(ColorPicker)

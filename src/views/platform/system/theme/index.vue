@@ -21,6 +21,10 @@
       noSquare
       noRotate
     ></my-upload>
+    <div>
+      主题色
+    </div>
+    <el-color-picker v-model="themeColor"></el-color-picker>
   </div>
 </template>
 
@@ -36,7 +40,8 @@ export default {
   data() {
     return {
       cropperShow: false,
-      imgDataUrl: ''
+      imgDataUrl: '',
+      themeColor: ''
     }
   },
   computed: {

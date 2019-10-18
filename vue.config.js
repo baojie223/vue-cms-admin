@@ -1,11 +1,10 @@
 const path = require('path')
-const defaultSettings = require('./src/settings.js')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Element Admin' // page title
+const name = 'Master Cloud' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -33,14 +32,7 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    },
-    proxy: {
-      '/mock': {
-        target: `http://127.0.0.1:${port}/mock`,
-        changeOrigin: true
-      }
-    },
-    after: require('./mock/mock-server.js')
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
