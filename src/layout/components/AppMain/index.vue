@@ -26,6 +26,7 @@ export default {
 .app-main {
   width: 100%;
   height: auto;
-  min-height: calc(100% - 46px);
+  min-height: calc(100% - 64px);
+  padding: 16px;
 }
 </style>

@@ -11,7 +11,7 @@
     <a-menu
       v-model="activeMenu"
       mode="inline"
-      :inlineCollapsed="collapsed"
+      :inline-collapsed="collapsed"
       style="height: calc(100% - 66px)"
     >
       <template v-for="route in currentPermissionRoutes.children">
@@ -53,7 +53,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['permissionRoutes', 'sidebar']),
+    ...mapGetters(['permissionRoutes']),
     currentPermissionRoutes() {
       const current = this.permissionRoutes.filter(
         route => route.path === this.primaryPath

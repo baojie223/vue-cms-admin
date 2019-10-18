@@ -1,6 +1,7 @@
 import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import router, { resetRouter } from '@/router'
+import { resetRouter } from '@/router'
+import axios from 'axios'
 
 const state = {
   token: getToken(),
@@ -26,12 +27,17 @@ const mutations = {
   SET_USER: (state, user) => {
     state.user = user
   },
-  ALL_CLEAR: (state) => {
+  ALL_CLEAR: state => {
     state.token = ''
     state.apps = []
     state.permissions = []
     state.settings = {}
     state.user = {}
+  },
+  SET_CONFIG: (state, config) => {
+    state.SERVER_URL = config.SERVER_URL
+    state.WEBSOCKET_URL = config.WEBSOCKET_URL
+    state.VISION_URL = config.VISION_URL
   }
 }
 
@@ -101,6 +107,15 @@ const actions = {
       commit('ALL_CLEAR')
       removeToken()
       resolve()
+    })
+  },
+
+  getConfig({ commit }) {
+    return new Promise(resolve => {
+      axios.get('/CONSTS.js').then(res => {
+        commit('SET_CONFIG')
+        resolve(res.data)
+      })
     })
   }
 

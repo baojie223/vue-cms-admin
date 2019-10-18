@@ -3,13 +3,13 @@
     <a-layout-header style="padding: 0">
       <navbar />
     </a-layout-header>
-    <tags-view v-if="false"></tags-view>
     <a-layout>
-      <sidebar v-show="!noSidebar" />
-      <a-layout-content style="padding: 24px 24px 0">
-        <app-main></app-main>
+      <sidebar v-if="!noSidebar" />
+      <a-layout-content>
+        <tags-view class="tags" />
+        <app-main />
         <div
-          style="text-align: center; padding: 16px 0; line-height: 1; color: rgba(0,0,0,.45)"
+          style="text-align: center; padding: 8px 0; line-height: 1; color: rgba(0,0,0,.45)"
         >Copyright &copy; 2019 无锡微茗智能科技有限公司</div>
       </a-layout-content>
     </a-layout>
@@ -33,12 +33,12 @@ export default {
   },
   computed: {
     noSidebar() {
-      return this.$route.meta.noSidebar
+      return this.$route.meta.noSidebar || false
     }
   }
 }
 </script>
 
-<style lang="less">
-@import '~@/styles/antd.less';
+<style lang="less" scoped>
+
 </style>

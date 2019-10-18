@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth'
 // create an axios instance
 const service = axios.create({
   // baseURL: window.API_URL,
-  baseURL: 'http://192.168.1.39:8001/api-v1',
+  baseURL: window.SERVER_URL,
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 60000
 })
