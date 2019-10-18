@@ -1,7 +1,5 @@
-const webpack = require('webpack')
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-const { API_URL, WEBSOCKET_URL, VISION_URL } = require('./public/CONSTS')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -52,14 +50,7 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
-    },
-    // plugins: [
-    //   new webpack.ProvidePlugin({
-    //     API_URL,
-    //     WEBSOCKET_URL,
-    //     VISION_URL
-    //   })
-    // ]
+    }
   },
   chainWebpack(config) {
     config.plugins.delete('preload') // TODO: need test

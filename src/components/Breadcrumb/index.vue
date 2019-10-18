@@ -1,12 +1,13 @@
 <template>
-  <el-breadcrumb class="app-breadcrumb" separator="/">
-    <transition-group name="breadcrumb">
-      <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
-        <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">{{ item.meta.title }}</span>
-        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
-      </el-breadcrumb-item>
-    </transition-group>
-  </el-breadcrumb>
+  <a-breadcrumb>
+    <a-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
+      <span
+        v-if="item.redirect==='noRedirect'||index==levelList.length-1"
+        class="no-redirect"
+      >{{ item.meta.title }}</span>
+      <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+    </a-breadcrumb-item>
+  </a-breadcrumb>
 </template>
 
 <script>
@@ -33,14 +34,20 @@ export default {
   methods: {
     getBreadcrumb() {
       // only show routes with meta.title
-      let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
+      let matched = this.$route.matched.filter(
+        item => item.meta && item.meta.title
+      )
       const first = matched[0]
 
       if (!this.isDashboard(first)) {
-        matched = [{ path: '/dashboard', meta: { title: 'Dashboard' }}].concat(matched)
+        matched = [{ path: '/dashboard', meta: { title: 'Dashboard' } }].concat(
+          matched
+        )
       }
 
-      this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
+      this.levelList = matched.filter(
+        item => item.meta && item.meta.title && item.meta.breadcrumb !== false
+      )
     },
     isDashboard(route) {
       const name = route && route.name
@@ -67,15 +74,19 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.app-breadcrumb.el-breadcrumb {
+<style lang="less">
+.ant-breadcrumb {
   display: inline-block;
-  font-size: 14px;
-  line-height: 50px;
-  margin-left: 8px;
+  color: rgba(255,255,255,.45);
+  .ant-breadcrumb-separator {
+    color: rgba(255,255,255,.45)
+  }
+  .ant-breadcrumb-link a {
+    color: rgba(255,255,255,.45)
+  }
 
   .no-redirect {
-    color: #97a8be;
+    color: rgba(255,255,255,.65);
     cursor: text;
   }
 }

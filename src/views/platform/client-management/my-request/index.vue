@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100vh; background: red">
     my-request
   </div>
 </template>

@@ -27,11 +27,15 @@ Object.keys(filters).forEach(key => {
 })
 import './antd' // ant-design-vue 按需引入
 import './element'
+
+import i18n from './locales'
+
 Vue.config.productionTip = false
 
 new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   render: h => h(App)
 })

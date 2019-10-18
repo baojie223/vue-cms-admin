@@ -1,8 +1,9 @@
-import Layout from '@/layout'
+// import Layout from '@/layout'
+import BasicLayout from '@/layout/BasicLayout.vue'
 
 const platformRouter = {
   path: '/platform',
-  component: Layout,
+  component: BasicLayout,
   redirect: '/platform/client-management',
   name: 'Platform',
   meta: {
@@ -30,6 +31,21 @@ const platformRouter = {
             import('@/views/platform/client-management/my-request'),
           name: 'MyRequest',
           meta: { title: '我的合作请求' }
+        }
+      ]
+    },
+    {
+      path: '/platform/system',
+      component: () => import('@/views/platform/system'),
+      redirect: '/platform/system/theme',
+      name: 'System',
+      meta: { title: '系统', icon: 'code', permission: ['Platform.System'] },
+      children: [
+        {
+          path: '/platform/system/theme',
+          component: () => import('@/views/platform/system/theme'),
+          name: 'Theme',
+          meta: { title: '外观设置' }
         }
       ]
     }
