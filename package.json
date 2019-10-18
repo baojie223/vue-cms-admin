@@ -18,7 +18,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "commit-msg": "echo -E $HUSKY_GIT_PARAMS"
+      "commit-msg": "echo -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
