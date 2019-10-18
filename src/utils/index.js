@@ -134,6 +134,7 @@ export function cleanArray(actual) {
       newArray.push(actual[i])
     }
   }
+
   return newArray
 }
 
