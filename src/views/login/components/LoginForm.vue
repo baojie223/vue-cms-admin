@@ -3,7 +3,7 @@
     <a-form-item>
       <a-input
         v-decorator="[
-          'tenant',
+          'tenant'
         ]"
         placeholder="企业"
         size="large"
@@ -108,8 +108,8 @@ export default {
               })
               this.loading = false
             })
-            .catch(err => {
-              this.$message.error('登录失败，请稍后再试')
+            .catch(() => {
+              // this.$message.error('登录失败，请稍后再试')
               this.loading = false
             })
         }

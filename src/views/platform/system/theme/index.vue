@@ -4,27 +4,27 @@
     <a-button type="primary" @click="save">保存</a-button>
     <div class="logo-upload">
       <div class="pic">
-        <img :src="imgDataUrl" />
+        <img :src="imgDataUrl">
       </div>
 
       <a-button block style="margin-top: 16px" @click="() => cropperShow = true">选择图片</a-button>
       <a-button type="danger" block style="margin-top: 8px" @click="() => imgDataUrl = logo">重置</a-button>
     </div>
     <my-upload
-      field="img"
-      @crop-success="cropSuccess"
       v-model="cropperShow"
+      field="img"
       :width="200"
       :height="64"
       img-format="png"
-      noCircle
-      noSquare
-      noRotate
-    ></my-upload>
+      no-circle
+      no-square
+      no-rotate
+      @crop-success="cropSuccess"
+    />
     <div>
       主题色
     </div>
-    <el-color-picker v-model="themeColor"></el-color-picker>
+    <el-color-picker v-model="themeColor" />
   </div>
 </template>
 

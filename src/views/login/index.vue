@@ -11,9 +11,14 @@
       <div class="header">
         <img src="~@/assets/images/login_logo.svg">
       </div>
-      <div class="body">
+      <div v-if="!isForget" class="body">
         <login-form />
-        <a-divider style="font-size: 14px; color: rgba(0, 0, 0, 0.25)">忘记密码</a-divider>
+        <a-divider style="font-size: 14px; color: rgba(0, 0, 0, 0.25)">
+          <a @click="onForget">忘记密码</a>
+        </a-divider>
+      </div>
+      <div v-if="isForget" class="body">
+        <forget-form @onBack="onBack" />
       </div>
       <div class="footer">
         <div>Copyright &copy; 2019 无锡微茗智能科技有限公司</div>
@@ -25,10 +30,25 @@
 
 <script>
 import LoginForm from './components/LoginForm'
+import ForgetForm from './components/ForgetForm'
 export default {
   name: 'Login',
   components: {
-    LoginForm
+    LoginForm,
+    ForgetForm
+  },
+  data() {
+    return {
+      isForget: false
+    }
+  },
+  methods: {
+    onForget() {
+      this.isForget = true
+    },
+    onBack() {
+      this.isForget = false
+    }
   }
 }
 </script>

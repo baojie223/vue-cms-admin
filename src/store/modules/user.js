@@ -1,14 +1,15 @@
 import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { setDrawer, getDrawer } from '@/utils/drawer'
 import { resetRouter } from '@/router'
-import axios from 'axios'
 
 const state = {
   token: getToken(),
   apps: [],
   permissions: [],
   settings: {},
-  user: {}
+  user: {},
+  drawer: getDrawer() || []
 }
 
 const mutations = {
@@ -16,6 +17,7 @@ const mutations = {
     state.token = token
   },
   SET_APPS: (state, apps) => {
+    // state.apps = apps.filter(app => app !== 'Platform')
     state.apps = apps
   },
   SET_PERMISSIONS: (state, permissions) => {
@@ -34,10 +36,15 @@ const mutations = {
     state.settings = {}
     state.user = {}
   },
-  SET_CONFIG: (state, config) => {
-    state.SERVER_URL = config.SERVER_URL
-    state.WEBSOCKET_URL = config.WEBSOCKET_URL
-    state.VISION_URL = config.VISION_URL
+  ADD_DRAWER: (state, item) => {
+    state.drawer.push(item)
+    setDrawer(state.drawer)
+  },
+  DEL_DRAWER: (state, link) => {
+    state.drawer = state.drawer.filter(item => {
+      return item.link !== link
+    })
+    setDrawer(state.drawer)
   }
 }
 
@@ -52,7 +59,7 @@ const actions = {
         password: password
       })
         .then(response => {
-          const { accessToken } = response.result
+          const { accessToken } = response
           commit('SET_TOKEN', accessToken)
           setToken(accessToken)
           resolve()
@@ -68,13 +75,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo()
         .then(response => {
-          const { result } = response
-
-          if (!result) {
+          if (!response) {
             reject('获取账户信息失败，请重新登录')
           }
 
-          const { apps, grantedPermissions, settings, user } = result
+          const { apps, grantedPermissions, settings, user } = response
 
           // roles must be a non-empty array
           if (!apps || apps.length <= 0) {
@@ -85,7 +90,7 @@ const actions = {
           commit('SET_PERMISSIONS', grantedPermissions)
           commit('SET_SETTINGS', settings)
           commit('SET_USER', user)
-          resolve(result)
+          resolve(response)
         })
         .catch(error => {
           reject(error)
@@ -110,15 +115,20 @@ const actions = {
     })
   },
 
-  getConfig({ commit }) {
-    return new Promise(resolve => {
-      axios.get('/CONSTS.js').then(res => {
-        commit('SET_CONFIG')
-        resolve(res.data)
-      })
-    })
-  }
+  putInDrawer({ commit }, { app, icon, route }) {
+    // console.log(app, route)
+    const item = {
+      icon: icon,
+      app: app,
+      title: route.meta.title,
+      link: route.path
+    }
+    commit('ADD_DRAWER', item)
+  },
 
+  takeFromDrawer({ commit }, link) {
+    commit('DEL_DRAWER', link)
+  }
   // dynamically modify permissions
   // changeRoles({ commit, dispatch }, role) {
   //   return new Promise(async resolve => {

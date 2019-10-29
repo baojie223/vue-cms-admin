@@ -25,8 +25,7 @@ export default {
 <style lang="less" scoped>
 .app-main {
   width: 100%;
-  height: auto;
-  min-height: calc(100% - 64px);
+  height: calc(100% - 30px);
   padding: 16px;
 }
 </style>

@@ -14,3 +14,10 @@ export function getInfo() {
     method: 'get'
   })
 }
+
+export function forget(email) {
+  return request({
+    url: `/account/${email}/forget-password`,
+    method: 'get'
+  })
+}

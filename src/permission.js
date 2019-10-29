@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-import { message } from 'ant-design-vue'
+import { message, Modal } from 'ant-design-vue'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
@@ -11,6 +11,9 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const whiteList = ['/login'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
+  // 关闭所有modal
+  Modal.destroyAll()
+
   // start progress bar
   NProgress.start()
 

@@ -14,10 +14,6 @@ import jobRouter from './modules/job'
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
  *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
  * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
@@ -26,8 +22,8 @@ import jobRouter from './modules/job'
     icon: 'svg-name'             the icon show in the sidebar
     noCache: true                if set true, the page will no be cached(default is false)
     affix: true                  if set true, the tag will affix in the tags-view
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
     activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
+    permission: '['Platform.setting']' 如果不设置则默认有权限，设置了但是没命中就不会显示
   }
  */
 
@@ -55,14 +51,12 @@ export const constantRoutes = [
   },
   {
     path: '/404',
-    component: () => import('@/views/error-page/404'),
+    component: () => import('@/views/exception/404'),
     hidden: true
-  },
-  {
-    path: '/401',
-    component: () => import('@/views/error-page/401'),
-    hidden: true
-  },
+  }
+]
+
+export const asyncRoutes = [
   {
     path: '/',
     component: BasicLayout,
@@ -72,13 +66,18 @@ export const constantRoutes = [
         path: '/dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', noSidebar: true }
+        meta: { title: '首页', icon: 'dashboard', noSidebar: true }
       }
     ]
+  },
+  platformRouter,
+  jobRouter,
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
   }
 ]
-
-export const asyncRoutes = [platformRouter, jobRouter]
 
 const createRouter = () =>
   new Router({

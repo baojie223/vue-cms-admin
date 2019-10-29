@@ -2,6 +2,7 @@ import axios from 'axios'
 import { message } from 'ant-design-vue'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import i18n from '@/locales/index'
 
 // create an axios instance
 const service = axios.create({
@@ -25,16 +26,17 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   response => {
-    const res = response.data
+    const res = response.data.result
     return Promise.resolve(res)
   },
   error => {
-    const err = error.response
+    const err = error.response.data.error.message.slice(1, -1)
     const status = err.status
-    /**
-     * 错误处理预留位
-    **/
-    message.error(`错误码：${status}`)
+    if (err.length > 30) {
+      message.error(status)
+    } else {
+      message.error(i18n.t(err))
+    }
     return Promise.reject(error)
   }
 )

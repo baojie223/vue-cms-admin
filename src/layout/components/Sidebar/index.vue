@@ -1,19 +1,11 @@
 <template>
   <a-layout-sider v-model="collapsed" :collapsible="true" :trigger="null" theme="light" width="256">
-    <div class="menu-title" :style="{'justify-content': collapsed ? 'center' : 'space-between'}">
-      <span v-if="!collapsed">{{ currentPermissionRoutes.meta.title }}</span>
-      <a-icon
-        class="trigger"
-        :type="collapsed ? 'menu-unfold' : 'menu-fold'"
-        @click="toggleCollapsed"
-      />
+    <div class="collapse" @click="toggleCollapsed">
+      <img v-show="!collapsed" src="~@/assets/images/收起.png">
+      <img v-show="collapsed" src="~@/assets/images/展开.png">
     </div>
-    <a-menu
-      v-model="activeMenu"
-      mode="inline"
-      :inline-collapsed="collapsed"
-      style="height: calc(100% - 66px)"
-    >
+
+    <a-menu v-model="activeMenu" mode="inline" :inline-collapsed="collapsed" style="height: 100%">
       <template v-for="route in currentPermissionRoutes.children">
         <template v-if="route.children && route.children.length > 0">
           <a-sub-menu :key="route.path">
@@ -21,13 +13,27 @@
               <a-icon :type="route.meta.icon" />
               <span>{{ route.meta.title }}</span>
             </span>
-            <a-menu-item v-for="child in route.children" :key="child.path">
+            <a-menu-item v-for="child in route.children" :key="child.path" class="item">
               <router-link :to="child.path" style="display: inline-block">{{ child.meta.title }}</router-link>
+              <a-icon
+                v-if="!isInDrawer(child.path)"
+                type="star"
+                class="icon"
+                @click.stop="putInDrawer({ app: route.meta.title, icon: route.meta.icon, route: child })"
+              />
+              <a-icon
+                v-else
+                type="star"
+                theme="filled"
+                class="icon"
+                style="display: block; color: #1890ff"
+                @click.stop="takeFromDrawer(child.path)"
+              />
             </a-menu-item>
           </a-sub-menu>
         </template>
         <template v-else>
-          <a-menu-item :key="route.path">
+          <a-menu-item :key="route.path" class="item">
             <a-icon :type="route.meta.icon" />
             <span v-if="collapsed">
               <router-link :to="route.path" style="display: inline-block">{{ route.meta.title }}</router-link>
@@ -37,6 +43,22 @@
               :to="route.path"
               style="display: inline-block"
             >{{ route.meta.title }}</router-link>
+            <template v-if="!collapsed">
+              <a-icon
+                v-if="!isInDrawer(route.path)"
+                type="star"
+                class="icon"
+                @click.stop="putInDrawer({ app: route.meta.title, icon: route.meta.icon, route: route })"
+              />
+              <a-icon
+                v-else
+                type="star"
+                theme="filled"
+                class="icon"
+                style="display: block; color: #1890ff"
+                @click.stop="takeFromDrawer(route.path)"
+              />
+            </template>
           </a-menu-item>
         </template>
       </template>
@@ -45,7 +67,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -53,7 +75,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['permissionRoutes']),
+    ...mapGetters(['permissionRoutes', 'drawer']),
     currentPermissionRoutes() {
       const current = this.permissionRoutes.filter(
         route => route.path === this.primaryPath
@@ -72,9 +94,15 @@ export default {
         return meta.activeMenu
       }
       return [path]
+    },
+    isInDrawer() {
+      return function(path) {
+        return this.drawer.filter(item => item.link === path).length > 0
+      }
     }
   },
   methods: {
+    ...mapActions('user', ['putInDrawer', 'takeFromDrawer']),
     toggleCollapsed() {
       this.collapsed = !this.collapsed
     }
@@ -93,6 +121,30 @@ export default {
   span {
     color: #1890ff;
     line-height: 1;
+  }
+}
+.collapse {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(100%, -50%);
+  z-index: 10;
+  cursor: pointer;
+}
+.item {
+  position: relative;
+  .icon {
+    display: none;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  &:hover {
+    .icon {
+      display: inline;
+      color: #1890ff;
+    }
   }
 }
 </style>

@@ -1,3 +1,5 @@
-// import CropUpload from './CropUpload'
+import AdvancedSearch from './AdvancedSearch/AdvancedSearch.vue'
+import QuickDrawer from './QuickDrawer'
+import BTable from './BTable'
 
-// export { CropUpload }
+export { AdvancedSearch, QuickDrawer, BTable }
