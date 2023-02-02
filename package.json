@@ -50,7 +50,7 @@
     "fuse.js": "3.4.4",
     "js-cookie": "2.2.0",
     "jsonlint": "1.6.3",
-    "jszip": "3.2.1",
+    "jszip": "3.8.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "normalize.css": "7.0.0",
